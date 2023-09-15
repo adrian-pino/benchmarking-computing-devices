@@ -1,0 +1,16 @@
+[general]
+mongodb_port = 27017
+results_folder = ../../results
+repetitions = 100
+
+[far-edge]
+raspberry-pi-1_ip = 192.168.1.101
+raspberry-pi-2_ip = 192.168.1.102
+raspberry-pi-3_ip = 192.168.1.103
+raspberry-pi-4_ip = 192.168.1.104
+
+[edge]
+nuc-1_ip = 192.168.1.201
+nuc-2_ip = 192.168.1.202
+nuc-3_ip = 192.168.1.203
+nuc-4_ip = 192.168.1.204
