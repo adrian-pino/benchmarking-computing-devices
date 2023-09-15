@@ -11,6 +11,7 @@ collection_name = "farms"
 
 # Function to insert data and measure
 def insert_data_and_measure(farm_data, mongo_uri, num_repetitions):
+    print(f"Connecting to MongoDB at {mongo_uri} on device {device_name}")  # Print the connection information
     client = MongoClient(mongo_uri)
     db = client[database_name]
     collection = db[collection_name]
@@ -64,7 +65,7 @@ if __name__ == "__main__":
         script_name = os.path.basename(__file__)
         print(f"Executing script: {script_name}")
         print("**************************************************************************************************************")
-        print("This script inserts data into different MongoDBs database placed on different devices and measures performance.")
+        print("This script inserts data into different MongoDBs databases placed on different devices and measures performance.")
 
 
         # Read configuration from the config.cfg file
