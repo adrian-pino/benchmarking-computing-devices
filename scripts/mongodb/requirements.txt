@@ -1,0 +1,10 @@
+Requirements:
+- python3 
+- venv
+
+# Create the virtual environment named "xgain"
+python3 -m venv venv-xgain
+
+# Activate the virtual environment
+source venv-xgain/bin/activate
+

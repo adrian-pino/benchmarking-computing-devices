@@ -1,0 +1,353 @@
+[
+  {
+    "farm_name": "Farm1",
+    "country": "Netherlands",
+    "plantations": [
+      {
+        "name": "Wheat Field",
+        "crop": "Wheat",
+        "area_acres": 50,
+        "yield_bushels_per_acre": 40
+      },
+      {
+        "name": "Apple Orchard",
+        "crop": "Apples",
+        "area_acres": 10,
+        "yield_bushels_per_acre": 200
+      }
+    ],
+    "animals": [
+      {
+        "name": "Cow",
+        "species": "Holstein",
+        "count": 50
+      },
+      {
+        "name": "Chicken",
+        "species": "Rhode Island Red",
+        "count": 200
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 22,
+      "rain_mm": 10,
+      "wind_speed_kph": 5
+    }
+  },
+  {
+    "farm_name": "Farm2",
+    "country": "Greece",
+    "plantations": [
+      {
+        "name": "Olive Grove",
+        "crop": "Olives",
+        "area_acres": 30,
+        "yield_bushels_per_acre": 50
+      },
+      {
+        "name": "Vineyard",
+        "crop": "Grapes",
+        "area_acres": 20,
+        "yield_bushels_per_acre": 60
+      }
+    ],
+    "animals": [
+      {
+        "name": "Goat",
+        "species": "Nubian",
+        "count": 40
+      },
+      {
+        "name": "Sheep",
+        "species": "Dorper",
+        "count": 60
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 28,
+      "rain_mm": 5,
+      "wind_speed_kph": 8
+    }
+  },
+  {
+    "farm_name": "Farm3",
+    "country": "United Kingdom",
+    "plantations": [
+      {
+        "name": "Potato Field",
+        "crop": "Potatoes",
+        "area_acres": 40,
+        "yield_bushels_per_acre": 30
+      },
+      {
+        "name": "Barley Field",
+        "crop": "Barley",
+        "area_acres": 35,
+        "yield_bushels_per_acre": 45
+      }
+    ],
+    "animals": [
+      {
+        "name": "Sheep",
+        "species": "Suffolk",
+        "count": 75
+      },
+      {
+        "name": "Pig",
+        "species": "Yorkshire",
+        "count": 30
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 18,
+      "rain_mm": 15,
+      "wind_speed_kph": 10
+    }
+  },
+  {
+    "farm_name": "Farm4",
+    "country": "Spain",
+    "plantations": [
+      {
+        "name": "Orange Grove",
+        "crop": "Oranges",
+        "area_acres": 25,
+        "yield_bushels_per_acre": 70
+      },
+      {
+        "name": "Almond Orchard",
+        "crop": "Almonds",
+        "area_acres": 15,
+        "yield_bushels_per_acre": 55
+      }
+    ],
+    "animals": [
+      {
+        "name": "Cow",
+        "species": "Simmental",
+        "count": 45
+      },
+      {
+        "name": "Chicken",
+        "species": "Leghorn",
+        "count": 180
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 26,
+      "rain_mm": 8,
+      "wind_speed_kph": 6
+    }
+  },
+  {
+    "farm_name": "Farm5",
+    "country": "Austria",
+    "plantations": [
+      {
+        "name": "Vineyard",
+        "crop": "Grapes",
+        "area_acres": 18,
+        "yield_bushels_per_acre": 62
+      },
+      {
+        "name": "Potato Field",
+        "crop": "Potatoes",
+        "area_acres": 22,
+        "yield_bushels_per_acre": 33
+      }
+    ],
+    "animals": [
+      {
+        "name": "Pig",
+        "species": "Berkshire",
+        "count": 38
+      },
+      {
+        "name": "Sheep",
+        "species": "Merino",
+        "count": 55
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 20,
+      "rain_mm": 12,
+      "wind_speed_kph": 7
+    }
+  },
+  {
+    "farm_name": "Farm6",
+    "country": "Slovenia",
+    "plantations": [
+      {
+        "name": "Wheat Field",
+        "crop": "Wheat",
+        "area_acres": 28,
+        "yield_bushels_per_acre": 38
+      },
+      {
+        "name": "Cherry Orchard",
+        "crop": "Cherries",
+        "area_acres": 12,
+        "yield_bushels_per_acre": 70
+      }
+    ],
+    "animals": [
+      {
+        "name": "Goat",
+        "species": "Alpine",
+        "count": 42
+      },
+      {
+        "name": "Chicken",
+        "species": "Plymouth Rock",
+        "count": 220
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 24,
+      "rain_mm": 7,
+      "wind_speed_kph": 9
+    }
+  },
+  {
+    "farm_name": "Farm7",
+    "country": "Portugal",
+    "plantations": [
+      {
+        "name": "Olive Grove",
+        "crop": "Olives",
+        "area_acres": 33,
+        "yield_bushels_per_acre": 48
+      },
+      {
+        "name": "Vineyard",
+        "crop": "Grapes",
+        "area_acres": 17,
+        "yield_bushels_per_acre": 65
+      }
+    ],
+    "animals": [
+      {
+        "name": "Sheep",
+        "species": "Dorset Horn",
+        "count": 50
+      },
+      {
+        "name": "Pig",
+        "species": "Large Black",
+        "count": 25
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 26,
+      "rain_mm": 6,
+      "wind_speed_kph": 8
+    }
+  },
+  {
+    "farm_name": "Farm8",
+    "country": "Macedonia",
+    "plantations": [
+      {
+        "name": "Apple Orchard",
+        "crop": "Apples",
+        "area_acres": 16,
+        "yield_bushels_per_acre": 75
+      },
+      {
+        "name": "Wheat Field",
+        "crop": "Wheat",
+        "area_acres": 24,
+        "yield_bushels_per_acre": 42
+      }
+    ],
+    "animals": [
+      {
+        "name": "Cow",
+        "species": "Jersey",
+        "count": 30
+      },
+      {
+        "name": "Chicken",
+        "species": "Wyandotte",
+        "count": 190
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 29,
+      "rain_mm": 5,
+      "wind_speed_kph": 7
+    }
+  },
+  {
+    "farm_name": "Farm9",
+    "country": "Belgium",
+    "plantations": [
+      {
+        "name": "Potato Field",
+        "crop": "Potatoes",
+        "area_acres": 28,
+        "yield_bushels_per_acre": 36
+      },
+      {
+        "name": "Carrot Field",
+        "crop": "Carrots",
+        "area_acres": 22,
+        "yield_bushels_per_acre": 40
+      }
+    ],
+    "animals": [
+      {
+        "name": "Pig",
+        "species": "Hampshire",
+        "count": 40
+      },
+      {
+        "name": "Sheep",
+        "species": "Clun Forest",
+        "count": 65
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 19,
+      "rain_mm": 14,
+      "wind_speed_kph": 6
+    }
+  },
+  {
+    "farm_name": "Farm10",
+    "country": "France",
+    "plantations": [
+      {
+        "name": "Vineyard",
+        "crop": "Grapes",
+        "area_acres": 35,
+        "yield_bushels_per_acre": 55
+      },
+      {
+        "name": "Sunflower Field",
+        "crop": "Sunflowers",
+        "area_acres": 30,
+        "yield_bushels_per_acre": 25
+      }
+    ],
+    "animals": [
+      {
+        "name": "Cow",
+        "species": "Charolais",
+        "count": 50
+      },
+      {
+        "name": "Chicken",
+        "species": "Sussex",
+        "count": 180
+      }
+    ],
+    "weather": {
+      "temperature_celsius": 25,
+      "rain_mm": 10,
+      "wind_speed_kph": 5
+    }
+  }
+]
+
