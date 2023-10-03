@@ -1,2 +1,26 @@
+# In the device acting as benchmarking server
+#####################################
+# pip install -r requirements.txt
 dnspython==2.4.2
 pymongo==4.5.0
+
+# In the target devices
+#####################################
+# Install MongoDB
+# sudo apt update
+# sudo apt install -y mongodb
+
+# Create data directory
+# sudo mkdir -p /data/db
+
+# Set correct permissions
+# sudo chown -R `whoami` /data/db
+
+# Change the bindIp value to 0.0.0.0 in /etc/mongodb.conf
+
+# Enable MongoDB (Default port: 27017)
+# sudo systemctl enable mongodb
+# sudo systemctl start mongodb
+
+# Check that port is open
+# sudo netstat -tuln | grep 27017

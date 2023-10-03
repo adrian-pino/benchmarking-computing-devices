@@ -5,119 +5,97 @@ import json
 import configparser
 from pymongo import MongoClient
 
-# Define the database name and collection name
-database_name = "benchmarking-computing"
-collection_name = "farms"
-
-# Function to insert data and measure
-def insert_data_and_measure(farm_data, mongo_uri, num_repetitions):
-    print(f"Connecting to MongoDB at {mongo_uri} on device {device_name}")  # Print the connection information
-    client = MongoClient(mongo_uri)
-    db = client[database_name]
-    collection = db[collection_name]
-    
-    success_count = 0
-    total_time = 0
-    
-    for i in range(num_repetitions):
-        data_to_insert = random.choice(farm_data)  # Randomly select data
-        
-        start_time = time.time()
-        try:
-            collection.insert_one(data_to_insert)
-            success_count += 1
-        except Exception as e:
-            print(f"Error on Farm - Repetition {i + 1}: {e}")
-        finally:
-            end_time = time.time()
-            total_time += end_time - start_time
-    
-    client.close()
-    
-    return success_count, total_time / num_repetitions
-
-# Function to read sample data from a JSON file
-def read_sample_data(filename):
-    with open(filename, "r") as file:
-        data = json.load(file)
-    return data
-
-# Function to read configuration from the config.cfg file
 def read_config(filename):
     config = configparser.ConfigParser()
     config.read(filename)
-    repetitions = int(config['general']['repetitions'])
-    mongodb_port = int(config['general']['mongodb_port'])  # Read MongoDB port setting
-    results_folder = config['general']['results_folder']  # Read results folder setting
+
+    return {
+        "mongodb_port": int(config['general'].get('mongodb_port')),
+        "results_file": config['general'].get('results_file', ''),
+        "repetitions": int(config['general'].get('repetitions')),
+        "database_name": config['general'].get('database_name', ''),
+        "collection_name": config['general'].get('collection_name', ''),
+        "extreme-edge": {k.replace("_ip", ""): v for k, v in config['extreme-edge'].items() if not k.startswith('#') and k.endswith('_ip')},
+        "near-edge": {k.replace("_ip", ""): v for k, v in config['near-edge'].items() if not k.startswith('#') and k.endswith('_ip')}
+    }
+
+def get_mongo_client(device_ip, port, database_name):
+    try:
+        client = MongoClient(device_ip, port)
+        db = client[database_name]
+        return db
+    except Exception as e:
+        print(f"Error connecting to MongoDB at {device_ip}:{port}. Error: {e}")
+        return None
+
+def read_json_file(filename):
+    with open(filename, 'r') as file:
+        data = json.load(file)
+    return data
+
+def measure_insertion_time(db, collection_name, data, repetitions):
+    collection = db[collection_name]
     
-    far_edge_ips = {}
-    for key, value in config['far-edge'].items():
-        far_edge_ips[key] = value
+    total_successful_inserts = 0
+    total_failed_inserts = 0
+
+    start_time = time.time()
+    for _ in range(repetitions):
+        try:
+            result = collection.insert_many(data, ordered=False)
+            total_successful_inserts += len(result.inserted_ids)
+        except Exception as e:
+            # When using ordered=False, BulkWriteError is raised for failed inserts.
+            # The details of the failed inserts can be found in the 'writeErrors' attribute.
+            if hasattr(e, 'details') and 'writeErrors' in e.details:
+                total_failed_inserts += len(e.details['writeErrors'])
+    end_time = time.time()
+
+    total_attempts = len(data) * repetitions
+    success_rate = (total_successful_inserts / total_attempts) * 100
     
-    edge_ips = {}
-    for key, value in config['edge'].items():
-        edge_ips[key] = value
-    
-    return repetitions, mongodb_port, results_folder, far_edge_ips, edge_ips
+    avg_insertion_time = (end_time - start_time) / repetitions
+
+    return avg_insertion_time, success_rate
+
+def write_processing_time_to_file(results_file, device_name, device_ip, avg_insertion_time, success_rate):
+    results = [
+        f"Device Name: {device_name}",
+        f"Device IP: {device_ip}",
+        f"Average Insertion Time: {avg_insertion_time:.3f} seconds",
+        f"Success Rate: {success_rate}%"
+    ]
+
+    with open(results_file, "a") as file:
+        file.write("-------------------------\n")
+        file.write("\n".join(results) + "\n\n")
+
+def drop_collection(db, collection_name):
+    try:
+        db.drop_collection(collection_name)
+        print(f"Collection '{collection_name}' dropped successfully.")
+    except Exception as e:
+        print(f"Error dropping collection '{collection_name}': {e}")
+
 
 if __name__ == "__main__":
     try:
-        script_name = os.path.basename(__file__)
-        print(f"Executing script: {script_name}")
-        print("**************************************************************************************************************")
-        print("This script inserts data into different MongoDBs databases placed on different devices and measures performance.")
+        config = read_config("config.cfg")
+        # json_data = read_json_file(config['db_file'])
+        json_data = read_json_file("sample_agriculture_data.json") # TODO: hardcoded
 
-
-        # Read configuration from the config.cfg file
-        repetitions, mongodb_port, results_folder, far_edge_ips, edge_ips = read_config("config.cfg")
-
-        # Read sample data from the JSON file
-        farm_data = read_sample_data("sample_agriculture_data.json")
-
-        # Create a dictionary to store results
-        results_dict = {}
-
-        print(f"Results will be stored in the folder: {results_folder}")
-        print("Results include success rates and average insertion times for different devices.")
-        print("**************************************************************************************************************")
-
-        for farm in farm_data:
-            farm_name = farm["farm_name"]
-
-            # Create sub-dictionaries for each farm
-            farm_results = {"far_edge": {}, "edge": {}}
-
-            for device_name, device_ip in far_edge_ips.items():
-                mongo_uri = f"mongodb://{device_ip}:{mongodb_port}"  # Include MongoDB port
-                success_count, avg_time = insert_data_and_measure(farm_data, mongo_uri, repetitions)
-
-                # Store results for far-edge devices
-                farm_results["far_edge"][device_name] = {
-                    "Device IP": device_ip,
-                    "Success Rate": success_count / repetitions * 100,
-                    "Average Insertion Time": avg_time,
-                }
-
-            for device_name, device_ip in edge_ips.items():
-                mongo_uri = f"mongodb://{device_ip}:{mongodb_port}"  # Include MongoDB port
-                success_count, avg_time = insert_data_and_measure(farm_data, mongo_uri, repetitions)
-
-                # Store results for edge devices
-                farm_results["edge"][device_name] = {
-                    "Device IP": device_ip,
-                    "Success Rate": success_count / repetitions * 100,
-                    "Average Insertion Time": avg_time,
-                }
-
-            # Store farm-specific results in the main results dictionary
-            results_dict[farm_name] = farm_results
-
-        # Save the results dictionary as a JSON file
-        results_file = os.path.join(results_folder, "results.json")
-        with open(results_file, "w") as json_file:
-            json.dump(results_dict, json_file, indent=4)
-
-        print("Results saved to results.json")
+        # Run the script for the devices specified in the config file
+        for category in ['extreme-edge', 'near-edge']:
+            for device_name, device_ip in config[category].items():
+                db = get_mongo_client(device_ip, config['mongodb_port'], config['database_name'])
+                
+                if db is None:
+                    print(f"Skipping {device_name} due to connection issues.")
+                    continue  # Skip the rest of the loop for this device
+                
+                avg_insertion_time, success_rate = measure_insertion_time(db, config['collection_name'], json_data, config['repetitions'])
+                write_processing_time_to_file(config['results_file'], device_name, device_ip, avg_insertion_time, success_rate)
+                drop_collection(db, config['collection_name'])
 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"Error: {e}")
