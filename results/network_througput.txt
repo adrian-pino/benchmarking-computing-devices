@@ -1,0 +1,15 @@
+Running network_troughput.py on 2023-10-03 13:33:17
+(Configuration --> Duration: 5 seconds, Repetitions: 5)
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+
+Total Average RTT: 0.633 ms
+
+-------------------------
+Device Name: nuc-1
+Device IP: 192.168.123.38
+
+Total Average RTT: 0.575 ms
+
