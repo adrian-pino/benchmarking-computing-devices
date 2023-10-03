@@ -3,6 +3,7 @@ import os
 import configparser
 import re
 import datetime
+import pdb
 
 def read_config(filename):
     config = configparser.ConfigParser()
@@ -16,47 +17,60 @@ def read_config(filename):
         "near-edge": {k.replace("_ip", ""): v for k, v in config['near-edge'].items()}
     }
 
-def ping_device(device_ip, duration, repetitions):
+def measure_throughput(server_ip, duration, repetitions):
     results = []
 
     for _ in range(repetitions):
         try:
-            cmd = ["ping", "-c", str(duration), device_ip]
+            cmd = ["iperf3", "-c", server_ip, "-t", str(duration)]
             result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, universal_newlines=True)
             results.append(result)
         except subprocess.CalledProcessError as e:
             results.append(e.output)
     return "\n".join(results)
 
-def filtering_rtt_from_output(ping_output):
-    rtt_pattern = re.compile(r"rtt min/avg/max/mdev = [\d.]+/([\d.]+)/[\d.]+/[\d.]+ ms")
-    avg_rtts = []
+# TODO Fix regex pattern
+# def extract_bandwidth_from_output(iperf_output):
+#     bandwidth_pattern = re.compile(r"\[\s+\d+\]\s+\d+\.\d+-\d+\.\d+\s+sec\s+\d+\s+\w+Bytes\s+(\d+\.\d+)\s+(\wbits/sec)\s+receiver")
+#     bandwidths = []
+    
+#     for line in iperf_output.splitlines():
+#         match = bandwidth_pattern.search(line)
+#         if match:
+#             value, unit = float(match.group(1)), match.group(2)
 
-    for line in ping_output.splitlines():
-        match = rtt_pattern.search(line)
-        if match:
-            avg_rtt = float(match.group(1))  # Convert string to float
-            avg_rtts.append(avg_rtt)
+#             # Convert to Mbits/sec if necessary
+#             if unit == "Kbits/sec":
+#                 value /= 1000
+#             elif unit == "Gbits/sec":
+#                 value *= 1000
+#             # Add other potential conversions if needed
 
-    return avg_rtts
+#             # pdb.set_trace()
 
-def write_results_to_file(results_file, device_name, device_ip, ping_output):
-    avg_rtts = filtering_rtt_from_output(ping_output)
+#             bandwidths.append(value)
 
-    # Calculate the total average RTT
-    total_avg_rtt = sum(avg_rtts) / len(avg_rtts) if avg_rtts else 0
+#     return bandwidths
+    
+def write_results_to_file(results_file, device_name, device_ip, iperf_output):
+    # bandwidths = extract_bandwidth_from_output(iperf_output)
+    # bandwidths = iperf_output
+    # total_avg_bandwidth = sum(bandwidths) / len(bandwidths) if bandwidths else 0
 
-    results = [
-        f"Device Name: {device_name}",
-        f"Device IP: {device_ip}",
-    ]
-    # results.extend([f"Average RTT: {rtt} ms" for rtt in avg_rtts])
-    results.append(f"\nTotal Average RTT: {total_avg_rtt:.3f} ms")
+    # results = [
+    #     f"Device Name: {device_name}",
+    #     f"Device IP: {device_ip}",
+    # ]
+    # results.append(f"\nTotal Average Bandwidth: {total_avg_bandwidth:.3f} Mbits/sec")
 
-    # Write the results to a file
+    # with open(results_file, "a") as file:
+    #     file.write("-------------------------\n")
+    #     file.write("\n".join(results) + "\n\n")
+
     with open(results_file, "a") as file:
         file.write("-------------------------\n")
-        file.write("\n".join(results) + "\n\n")
+        # file.write("\n".join(results) + "\n\n")
+        file.write(iperf_output)
 
 
 if __name__ == "__main__":
@@ -74,8 +88,8 @@ if __name__ == "__main__":
         # Run the script in the devices specified in the config file
         for category in ['extreme-edge', 'near-edge']:
             for device_name, device_ip in config[category].items():
-                ping_results = ping_device(device_ip, config['duration'], config['repetitions'])
-                write_results_to_file(config['results_file'], device_name, device_ip, ping_results)
+                throughput_results = measure_throughput(device_ip, config['duration'], config['repetitions'])
+                write_results_to_file(config['results_file'], device_name, device_ip, throughput_results)
 
     except Exception as e:
         print(f"Error: {e}")

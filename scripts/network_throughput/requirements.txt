@@ -1,0 +1,5 @@
+# Install iperf3
+apt-get install iperf3
+
+# Set iperf3 to listen
+iperf3 -s
