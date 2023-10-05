@@ -1,3 +1,6 @@
 venv-xgain/
 scripts/mongodb/venv-xgain/
 results/
+scripts/network_latency/config.cfg
+scripts/resource_utilization/config.cfg
+scripts/network_latency/config.cfg

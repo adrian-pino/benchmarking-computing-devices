@@ -1,5 +1,8 @@
 # Install iperf3
 apt-get install iperf3
 
-# Set iperf3 to listen
+# In the target devices
 iperf3 -s
+
+# In the server launching the benchmarking
+python ./network_troughput.py

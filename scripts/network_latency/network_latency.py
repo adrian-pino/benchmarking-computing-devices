@@ -28,35 +28,58 @@ def ping_device(device_ip, duration, repetitions):
             results.append(e.output)
     return "\n".join(results)
 
-def filtering_rtt_from_output(ping_output):
+def filtering_values_from_output(ping_output):
+    time_per_second_pattern = re.compile(r"time=([\d.]+) ms")
     rtt_pattern = re.compile(r"rtt min/avg/max/mdev = [\d.]+/([\d.]+)/[\d.]+/[\d.]+ ms")
+
+    # Split by "--- IP_ADDRESS ping statistics ---" to separate each repetition
+    repetitions = re.split(r"--- \d+\.\d+\.\d+\.\d+ ping statistics ---", ping_output)
+
+    times_per_repetition = []
     avg_rtts = []
 
-    for line in ping_output.splitlines():
-        match = rtt_pattern.search(line)
-        if match:
-            avg_rtt = float(match.group(1))  # Convert string to float
-            avg_rtts.append(avg_rtt)
+    for repetition in repetitions:
+        if not repetition.strip():
+            continue
+        
+        time_per_second = time_per_second_pattern.findall(repetition)
+        times_per_repetition.append([float(time) for time in time_per_second])
+        
+        avg_match = rtt_pattern.search(repetition)
+        if avg_match:
+            avg_rtts.append(float(avg_match.group(1)))
 
-    return avg_rtts
+    return times_per_repetition, avg_rtts
 
 def write_results_to_file(results_file, device_name, device_ip, ping_output):
-    avg_rtts = filtering_rtt_from_output(ping_output)
+    times_per_repetition, avg_rtts = filtering_values_from_output(ping_output)
 
-    # Calculate the total average RTT
-    total_avg_rtt = sum(avg_rtts) / len(avg_rtts) if avg_rtts else 0
-
-    results = [
-        f"Device Name: {device_name}",
-        f"Device IP: {device_ip}",
-    ]
-    # results.extend([f"Average RTT: {rtt} ms" for rtt in avg_rtts])
-    results.append(f"\nTotal Average RTT: {total_avg_rtt:.3f} ms")
-
-    # Write the results to a file
     with open(results_file, "a") as file:
         file.write("-------------------------\n")
-        file.write("\n".join(results) + "\n\n")
+        file.write(f"Device Name: {device_name}\n")
+        file.write(f"Device IP: {device_ip}\n\n")
+
+        # Writing each repetition's results
+        for index, time_per_second in enumerate(times_per_repetition):
+            file.write("Detailed Ping Results for Repetition " + str(index + 1) + ":\n")
+            for i, time in enumerate(time_per_second):
+                file.write(f"Ping nº{i + 1}: {time:.3f} ms\n")
+            file.write("\n")
+
+        # Summary
+        file.write("Summary:\n")
+        for avg in avg_rtts:
+            file.write(f"Average RTT: {avg:.3f} ms\n")
+        
+        # Total Average
+        total_avg_rtt = sum(avg_rtts) / len(avg_rtts) if avg_rtts else 0
+        file.write(f"Total Average RTT: {total_avg_rtt:.3f} ms\n\n")
+
+def write_completion_layer_notice(results_file, category):
+    with open(results_file, "a") as file:
+        file.write("\n" + ('*' * 40) + "\n")
+        file.write(f"Completed tests for {category.replace('-', ' ').title()}\n")
+        file.write(('*' * 40) + "\n\n")
 
 
 if __name__ == "__main__":
@@ -69,13 +92,15 @@ if __name__ == "__main__":
 
         with open(config['results_file'], "a") as file:
             file.write(f"Running {script_name} on {current_date}\n")
-            file.write(f"(Configuration --> Duration: {config['duration']} seconds, Repetitions: {config['repetitions']})\n\n")
-
+            file.write(f"(Configuration --> Duration: {config['duration']} seconds, Repetitions: {config['repetitions']})\n")
+            file.write(f"{'*' * 60}\n\n")
+            
         # Run the script in the devices specified in the config file
         for category in ['extreme-edge', 'near-edge']:
             for device_name, device_ip in config[category].items():
                 ping_results = ping_device(device_ip, config['duration'], config['repetitions'])
                 write_results_to_file(config['results_file'], device_name, device_ip, ping_results)
+            write_completion_layer_notice(config['results_file'], category)
 
     except Exception as e:
         print(f"Error: {e}")

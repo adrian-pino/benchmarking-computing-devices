@@ -70,7 +70,15 @@ def write_results_to_file(results_file, device_name, device_ip, iperf_output):
     with open(results_file, "a") as file:
         file.write("-------------------------\n")
         # file.write("\n".join(results) + "\n\n")
+        file.write(f"Device Name: {device_name}\n")
+        file.write(f"Device IP: {device_ip}\n")
         file.write(iperf_output)
+
+def write_completion_layer_notice(results_file, category):
+    with open(results_file, "a") as file:
+        file.write("\n" + ('*' * 40) + "\n")
+        file.write(f"Completed tests for {category.replace('-', ' ').title()}\n")
+        file.write(('*' * 40) + "\n\n")
 
 
 if __name__ == "__main__":
@@ -83,13 +91,15 @@ if __name__ == "__main__":
 
         with open(config['results_file'], "a") as file:
             file.write(f"Running {script_name} on {current_date}\n")
-            file.write(f"(Configuration --> Duration: {config['duration']} seconds, Repetitions: {config['repetitions']})\n\n")
+            file.write(f"(Configuration --> Duration: {config['duration']} seconds, Repetitions: {config['repetitions']})\n")
+            file.write(f"{'*' * 60}\n\n")
 
         # Run the script in the devices specified in the config file
         for category in ['extreme-edge', 'near-edge']:
             for device_name, device_ip in config[category].items():
                 throughput_results = measure_throughput(device_ip, config['duration'], config['repetitions'])
                 write_results_to_file(config['results_file'], device_name, device_ip, throughput_results)
+            write_completion_layer_notice(config['results_file'], category)
 
     except Exception as e:
         print(f"Error: {e}")

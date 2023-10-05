@@ -51,6 +51,12 @@ def write_service_availability_to_file(results_file, device_name, device_ip, suc
         file.write("-------------------------\n")
         file.write("\n".join(results) + "\n\n")
 
+def write_completion_layer_notice(results_file, category):
+    with open(results_file, "a") as file:
+        file.write("\n" + ('*' * 40) + "\n")
+        file.write(f"Completed tests for {category.replace('-', ' ').title()}\n")
+        file.write(('*' * 40) + "\n\n")
+
 
 if __name__ == "__main__":
     try:
@@ -62,13 +68,15 @@ if __name__ == "__main__":
 
         with open(config['results_file'], "a") as file:
             file.write(f"Running {script_name} on {current_date}\n")
-            file.write(f"(Configuration --> Duration: {config['duration']} seconds, Repetitions: {config['repetitions']})\n\n")
+            file.write(f"(Configuration --> Duration: {config['duration']} seconds, Repetitions: {config['repetitions']})\n")
+            file.write(f"{'*' * 60}\n\n")
 
         # Run the script in the devices specified in the config file
         for category in ['extreme-edge', 'near-edge']:
             for device_name, device_ip in config[category].items():
                 successful_pings, total_pings = ping_device(device_ip, config['duration'], config['repetitions'])
                 write_service_availability_to_file(config['results_file'], device_name, device_ip, successful_pings, total_pings)
-
+            write_completion_layer_notice(config['results_file'], category)
+            
     except Exception as e:
         print(f"Error: {e}")
