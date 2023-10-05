@@ -1,0 +1,18 @@
+# How to run the benchmarking
+# 1) Navigate into the KPI you want to measure (scripts folder) 
+# 2) Set the configuration parameters
+# 3) Run the python script with its name
+
+# Requirements:
+# 1) Have python3 and venv installed
+# 2) Create the venv and install the pip modules needed
+
+# Steps:
+# Create the virtual environment named "xgain"
+python3 -m venv venv-xgain
+
+# Activate the virtual environment
+source venv-xgain/bin/activate
+
+# Install requirements
+pip install -r requirements.txt
