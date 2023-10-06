@@ -1,0 +1,56 @@
+Running network_latency.py on 2023-10-05 17:18:40
+(Configuration --> Duration: 3 seconds, Repetitions: 2)
+************************************************************
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+
+Detailed Ping Results for Repetition 1:
+Ping nº1: 2.710 ms
+Ping nº2: 0.585 ms
+Ping nº3: 0.530 ms
+
+Detailed Ping Results for Repetition 2:
+Ping nº1: 0.497 ms
+Ping nº2: 0.407 ms
+Ping nº3: 0.561 ms
+
+Detailed Ping Results for Repetition 3:
+
+Summary:
+Average RTT: 1.276 ms
+Average RTT: 0.488 ms
+Total Average RTT: 0.882 ms
+
+
+****************************************
+Completed tests for Extreme Edge
+****************************************
+
+-------------------------
+Device Name: nuc-1
+Device IP: 192.168.123.38
+
+Detailed Ping Results for Repetition 1:
+Ping nº1: 0.501 ms
+Ping nº2: 0.651 ms
+Ping nº3: 0.730 ms
+
+Detailed Ping Results for Repetition 2:
+Ping nº1: 0.593 ms
+Ping nº2: 0.745 ms
+Ping nº3: 0.695 ms
+
+Detailed Ping Results for Repetition 3:
+
+Summary:
+Average RTT: 0.627 ms
+Average RTT: 0.677 ms
+Total Average RTT: 0.652 ms
+
+
+****************************************
+Completed tests for Near Edge
+****************************************
+

@@ -1,0 +1,13 @@
+Running resource_utilization.py on 2023-10-06 10:43:56
+(Configuration --> Duration: 30 seconds, Repetitions: 1)
+************************************************************
+
+-------------------------
+Device name: sna-k8s
+
+Summary for sna-k8s:
+Average CPU User Processes (us): 51.81%
+Average CPU System Processes (sy): 39.41%
+Average CPU Idle (id): 2.59%
+Average Free RAM: 1070.81 MB
+

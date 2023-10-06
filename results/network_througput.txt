@@ -1,0 +1,82 @@
+Running network_throughput.py on 2023-10-05 16:33:02
+(Configuration --> Duration: 5 seconds, Repetitions: 2)
+************************************************************
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Connecting to host 192.168.123.38, port 5201
+[  5] local 192.168.123.36 port 52240 connected to 192.168.123.38 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   110 MBytes   926 Mbits/sec    9    529 KBytes       
+[  5]   1.00-2.00   sec   111 MBytes   934 Mbits/sec    4    663 KBytes       
+[  5]   2.00-3.00   sec   111 MBytes   933 Mbits/sec    0    782 KBytes       
+[  5]   3.00-4.00   sec   112 MBytes   944 Mbits/sec    0    885 KBytes       
+[  5]   4.00-5.00   sec   101 MBytes   849 Mbits/sec  434    349 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-5.00   sec   547 MBytes   917 Mbits/sec  447             sender
+[  5]   0.00-5.00   sec   543 MBytes   911 Mbits/sec                  receiver
+
+iperf Done.
+
+Connecting to host 192.168.123.38, port 5201
+[  5] local 192.168.123.36 port 52264 connected to 192.168.123.38 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   115 MBytes   960 Mbits/sec   48    987 KBytes       
+[  5]   1.00-2.00   sec   111 MBytes   933 Mbits/sec   18    762 KBytes       
+[  5]   2.00-3.00   sec   112 MBytes   944 Mbits/sec    0    867 KBytes       
+[  5]   3.00-4.00   sec   109 MBytes   912 Mbits/sec    0    959 KBytes       
+[  5]   4.00-5.00   sec   111 MBytes   934 Mbits/sec    0   1.02 MBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-5.00   sec   558 MBytes   937 Mbits/sec   66             sender
+[  5]   0.00-5.00   sec   555 MBytes   931 Mbits/sec                  receiver
+
+iperf Done.
+Running network_throughput.py on 2023-10-05 16:34:46
+(Configuration --> Duration: 5 seconds, Repetitions: 2)
+************************************************************
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Connecting to host 192.168.123.38, port 5201
+[  5] local 192.168.123.36 port 55456 connected to 192.168.123.38 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   113 MBytes   944 Mbits/sec    4    444 KBytes       
+[  5]   1.00-2.00   sec   110 MBytes   923 Mbits/sec    4    594 KBytes       
+[  5]   2.00-3.00   sec   110 MBytes   922 Mbits/sec    2    713 KBytes       
+[  5]   3.00-4.00   sec   111 MBytes   933 Mbits/sec    2    823 KBytes       
+[  5]   4.00-5.00   sec   112 MBytes   944 Mbits/sec    0    921 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-5.00   sec   556 MBytes   933 Mbits/sec   12             sender
+[  5]   0.00-5.01   sec   553 MBytes   927 Mbits/sec                  receiver
+
+iperf Done.
+
+Connecting to host 192.168.123.38, port 5201
+[  5] local 192.168.123.36 port 55476 connected to 192.168.123.38 port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec   115 MBytes   968 Mbits/sec   44    983 KBytes       
+[  5]   1.00-2.00   sec   111 MBytes   933 Mbits/sec    3    775 KBytes       
+[  5]   2.00-3.00   sec   111 MBytes   934 Mbits/sec    0    881 KBytes       
+[  5]   3.00-4.00   sec   112 MBytes   944 Mbits/sec    0    974 KBytes       
+[  5]   4.00-5.00   sec   111 MBytes   933 Mbits/sec    4    757 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-5.00   sec   562 MBytes   942 Mbits/sec   51             sender
+[  5]   0.00-5.00   sec   558 MBytes   936 Mbits/sec                  receiver
+
+iperf Done.
+
+********************
+Completed tests for Extreme Edge
+********************
+
+
+********************
+Completed tests for Near Edge
+********************
+

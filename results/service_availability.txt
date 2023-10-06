@@ -1,0 +1,45 @@
+Running service_availability.py on 2023-10-03 18:23:27
+(Configuration --> Duration: 5 seconds, Repetitions: 5)
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Service Availability: 100.00%
+Successful Pings: 25
+Total Pings: 25
+
+-------------------------
+Device Name: nuc-1
+Device IP: 192.168.123.38
+Service Availability: 100.00%
+Successful Pings: 25
+Total Pings: 25
+
+Running service_availability.py on 2023-10-05 16:42:22
+(Configuration --> Duration: 5 seconds, Repetitions: 5)
+************************************************************
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Service Availability: 100.00%
+Successful Pings: 25
+Total Pings: 25
+
+
+****************************************
+Completed tests for Extreme Edge
+****************************************
+
+-------------------------
+Device Name: nuc-1
+Device IP: 192.168.123.38
+Service Availability: 100.00%
+Successful Pings: 25
+Total Pings: 25
+
+
+****************************************
+Completed tests for Near Edge
+****************************************
+

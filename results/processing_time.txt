@@ -1,0 +1,60 @@
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.017 seconds
+Success Rate: 100%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.013 seconds
+Success Rate: 100%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.049 seconds
+Success Rate: 20.0%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.038 seconds
+Success Rate: 20.0%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.023 seconds
+Success Rate: 20.0%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.022 seconds
+Success Rate: 20.0%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.015 seconds
+Success Rate: 20.0%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.012 seconds
+Success Rate: 20.0%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.019 seconds
+Success Rate: 20.0%
+
+-------------------------
+Device Name: raspberry-pi-1
+Device IP: 192.168.123.38
+Average Insertion Time: 0.013 seconds
+Success Rate: 20.0%
+
