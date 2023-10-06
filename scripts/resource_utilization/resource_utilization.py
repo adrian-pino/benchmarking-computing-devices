@@ -4,6 +4,7 @@ import datetime
 import os
 import socket
 import threading
+import time
 
 def read_config(filename):
     config = configparser.ConfigParser()
@@ -13,28 +14,36 @@ def read_config(filename):
         "duration": int(config['general'].get('duration')),
         "repetitions": int(config['general'].get('repetitions')),
         "vmstat_interval": int(config['resource-utilization'].get('vmstat_interval')),
-        "stress_cpu": int(config['resource-utilization'].get('stress_cpu')),
-        "stress_io": int(config['resource-utilization'].get('stress_io')),
-        "stress_vm": int(config['resource-utilization'].get('stress_vm')),
-        "stress_vm_bytes": config['resource-utilization'].get('stress_vm_bytes'),
     }
 
-def stress_system(cpu, io, vm, vm_bytes, duration):
-    cmd = [
-        "stress",
-        "--cpu", str(cpu),
-        "--io", str(io),
-        "--vm", str(vm),
-        "--vm-bytes", vm_bytes,
-        "--timeout", str(duration) + "s",
-        "--verbose"
-    ]
-    print("Executing:", " ".join(cmd))
-    subprocess.run(cmd)
+def fibonacci(n):
+    sequence = [0, 1]
+    while len(sequence) < n:
+        next_value = sequence[len(sequence) - 1] + sequence[len(sequence) - 2]
+        sequence.append(next_value)
+    return sequence
+
+def stress_cpu_and_ram(duration):
+    end_time = time.time() + duration
+    while time.time() < end_time:
+        # Stress CPU with Fibonacci calculations
+        fibonacci(1000)
+        
+        # Stress RAM
+        data = []
+        for _ in range(100000):
+            data.append([1, 2, 3, 4, 5] * 20)
+        del data
 
 def capture_vmstat(interval=1, duration=60):
     cmd = ["vmstat", str(interval), str(duration)]
     result = subprocess.check_output(cmd, universal_newlines=True)
+
+    # Print the vmstat output
+    print("------ VMSTAT OUTPUT ------")
+    print(result)
+    print("------ END OF VMSTAT OUTPUT ------")
+
     return result
 
 def process_vmstat_output(device_output):
@@ -67,12 +76,12 @@ def write_results_to_file(results_file, hostname, vmstat_output):
         file.write(f"Summary for {hostname}:\n")
         file.write(f"Average CPU User Processes (us): {metrics['avg_us']:.2f}%\n")
         file.write(f"Average CPU System Processes (sy): {metrics['avg_sy']:.2f}%\n")
-        file.write(f"Average CPU Idle (id): {metrics['avg_id']:.2f}%\n")  # This line includes the avg_id metric in the results.
+        file.write(f"Average CPU Idle (id): {metrics['avg_id']:.2f}%\n")
         file.write(f"Average RAM Usage: {100 - (metrics['avg_free'] / (os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')) * 100):.2f}%\n")
         file.write(f"Average Free RAM: {metrics['avg_free'] / 1024:.2f} MB\n\n")
 
-def stress_and_capture(vmstat_interval, duration, stress_cpu, stress_io, stress_vm, stress_vm_bytes):
-    stress_thread = threading.Thread(target=stress_system, args=(stress_cpu, stress_io, stress_vm, stress_vm_bytes, duration))
+def stress_and_capture(vmstat_interval, duration):
+    stress_thread = threading.Thread(target=stress_cpu_and_ram, args=(duration,))
     stress_thread.start()
 
     vmstat_output = capture_vmstat(vmstat_interval, duration)
@@ -94,11 +103,7 @@ if __name__ == "__main__":
         for _ in range(config['repetitions']):
             results = stress_and_capture(
                 vmstat_interval=config['vmstat_interval'], 
-                duration=config['duration'],
-                stress_cpu=config['stress_cpu'], 
-                stress_io=config['stress_io'], 
-                stress_vm=config['stress_vm'],
-                stress_vm_bytes=config['stress_vm_bytes']
+                duration=config['duration']
             )
 
             hostname = socket.gethostname()
