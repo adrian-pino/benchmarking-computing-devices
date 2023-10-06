@@ -66,13 +66,13 @@ def write_results_to_file(results_file, hostname, vmstat_output):
         file.write(f"Device name: {hostname}\n\n")
 
         # Writing the vmstat results directly
-        file.write("Resource Utilization:\n")
-        file.write(vmstat_output + "\n\n")
+        # file.write("Resource Utilization:\n")
+        # file.write(vmstat_output + "\n\n")
 
         # Extract metrics from vmstat_output
         metrics = process_vmstat_output(vmstat_output)
 
-        # Append the summary
+        # Write the summary
         file.write(f"Summary for {hostname}:\n")
         file.write(f"Average CPU User Processes (us): {metrics['avg_us']:.2f}%\n")
         file.write(f"Average CPU System Processes (sy): {metrics['avg_sy']:.2f}%\n")
