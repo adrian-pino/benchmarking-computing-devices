@@ -67,7 +67,8 @@ def write_results_to_file(results_file, hostname, vmstat_output):
         file.write(f"Summary for {hostname}:\n")
         file.write(f"Average CPU User Processes (us): {metrics['avg_us']:.2f}%\n")
         file.write(f"Average CPU System Processes (sy): {metrics['avg_sy']:.2f}%\n")
-        file.write(f"Average CPU Idle (id): {metrics['avg_id']:.2f}%\n")
+        file.write(f"Average CPU Idle (id): {metrics['avg_id']:.2f}%\n")  # This line includes the avg_id metric in the results.
+        file.write(f"Average RAM Usage: {100 - (metrics['avg_free'] / (os.sysconf('SC_PAGE_SIZE') * os.sysconf('SC_PHYS_PAGES')) * 100):.2f}%\n")
         file.write(f"Average Free RAM: {metrics['avg_free'] / 1024:.2f} MB\n\n")
 
 def stress_and_capture(vmstat_interval, duration, stress_cpu, stress_io, stress_vm, stress_vm_bytes):
