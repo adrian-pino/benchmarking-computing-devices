@@ -3,6 +3,7 @@ import configparser
 import datetime
 import os
 import socket
+import threading
 
 def read_config(filename):
     config = configparser.ConfigParser()
@@ -11,11 +12,11 @@ def read_config(filename):
         "results_file": config['general'].get('results_file', ''),
         "duration": int(config['general'].get('duration')),
         "repetitions": int(config['general'].get('repetitions')),
-        "vmstat_interval": int(config['resource-utilization'].get('vmstat_interval', 1)),
-        "stress_cpu": int(config['resource-utilization'].get('stress_cpu', 1)),
-        "stress_io": int(config['resource-utilization'].get('stress_io', 1)),
-        "stress_vm": int(config['resource-utilization'].get('stress_vm', 1)),
-        "stress_vm_bytes": config['resource-utilization'].get('stress_vm_bytes', '50M'),
+        "vmstat_interval": int(config['resource-utilization'].get('vmstat_interval')),
+        "stress_cpu": int(config['resource-utilization'].get('stress_cpu')),
+        "stress_io": int(config['resource-utilization'].get('stress_io')),
+        "stress_vm": int(config['resource-utilization'].get('stress_vm')),
+        "stress_vm_bytes": config['resource-utilization'].get('stress_vm_bytes'),
     }
 
 def stress_system(cpu, io, vm, vm_bytes, duration):
@@ -28,6 +29,7 @@ def stress_system(cpu, io, vm, vm_bytes, duration):
         "--timeout", str(duration) + "s",
         "--verbose"
     ]
+    print("Executing:", " ".join(cmd))
     subprocess.run(cmd)
 
 def capture_vmstat(interval=1, duration=60):
@@ -36,16 +38,12 @@ def capture_vmstat(interval=1, duration=60):
     return result
 
 def process_vmstat_output(device_output):
-    # Extract lines corresponding to the vmstat results
     lines = device_output.split("\n")[2:-1]
-
-    # Initialize metrics
     total_us, total_sy, total_id, total_free = 0, 0, 0, 0
 
-    # Iterate through each line to compute averages
     for line in lines:
         values = line.split()
-        if not values[0].isdigit():  # Skip lines that don't start with a number
+        if not values[0].isdigit():
             continue
         total_us += int(values[12])
         total_sy += int(values[13])
@@ -65,32 +63,25 @@ def write_results_to_file(results_file, hostname, vmstat_output):
         file.write("-------------------------\n")
         file.write(f"Device name: {hostname}\n\n")
 
-        # Writing the vmstat results directly
-        # file.write("Resource Utilization:\n")
-        # file.write(vmstat_output + "\n\n")
-
-        # Extract metrics from vmstat_output
         metrics = process_vmstat_output(vmstat_output)
-
-        # Write the summary
         file.write(f"Summary for {hostname}:\n")
         file.write(f"Average CPU User Processes (us): {metrics['avg_us']:.2f}%\n")
         file.write(f"Average CPU System Processes (sy): {metrics['avg_sy']:.2f}%\n")
         file.write(f"Average CPU Idle (id): {metrics['avg_id']:.2f}%\n")
         file.write(f"Average Free RAM: {metrics['avg_free'] / 1024:.2f} MB\n\n")
 
-def write_completion_layer_notice(results_file, category):
-    with open(results_file, "a") as file:
-        file.write("\n" + ('*' * 40) + "\n")
-        file.write(f"Completed tests for {category.replace('-', ' ').title()}\n")
-        file.write(('*' * 40) + "\n\n")
+def stress_and_capture(vmstat_interval, duration, stress_cpu, stress_io, stress_vm, stress_vm_bytes):
+    stress_thread = threading.Thread(target=stress_system, args=(stress_cpu, stress_io, stress_vm, stress_vm_bytes, duration))
+    stress_thread.start()
 
+    vmstat_output = capture_vmstat(vmstat_interval, duration)
+    stress_thread.join()
+
+    return vmstat_output
 
 if __name__ == "__main__":
     try:
         config = read_config("config.cfg")
-
-        # Write the initial lines to the results file
         script_name = os.path.basename(__file__)
         current_date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -100,22 +91,15 @@ if __name__ == "__main__":
             file.write(f"{'*' * 60}\n\n")
 
         for _ in range(config['repetitions']):
-            # Start stressing the system
-            stress_system(
-                cpu=config['stress_cpu'], 
-                io=config['stress_io'], 
-                vm=config['stress_vm'],
-                vm_bytes=config['stress_vm_bytes'],
-                duration=config['duration']
+            results = stress_and_capture(
+                vmstat_interval=config['vmstat_interval'], 
+                duration=config['duration'],
+                stress_cpu=config['stress_cpu'], 
+                stress_io=config['stress_io'], 
+                stress_vm=config['stress_vm'],
+                stress_vm_bytes=config['stress_vm_bytes']
             )
-            
-            # Capture resource utilization metrics
-            results = capture_vmstat(
-                interval=config['vmstat_interval'], 
-                duration=config['duration']
-            )
-            
-            # Write the results to the file
+
             hostname = socket.gethostname()
             write_results_to_file(config['results_file'], hostname, results)
 
