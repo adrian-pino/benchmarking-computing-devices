@@ -18,7 +18,7 @@ def read_config(filename):
         "stress_vm_bytes": config['resource-utilization'].get('stress_vm_bytes', '50M'),
     }
 
-def stress_system(cpu=1, io=1, vm=1, vm_bytes="50M", duration=60):
+def stress_system(cpu, io, vm, vm_bytes, duration):
     cmd = [
         "stress",
         "--cpu", str(cpu),
@@ -38,18 +38,20 @@ def capture_vmstat(interval=1, duration=60):
 def process_vmstat_output(device_output):
     # Extract lines corresponding to the vmstat results
     lines = device_output.split("\n")[2:-1]
-    
+
     # Initialize metrics
     total_us, total_sy, total_id, total_free = 0, 0, 0, 0
 
     # Iterate through each line to compute averages
     for line in lines:
         values = line.split()
+        if not values[0].isdigit():  # Skip lines that don't start with a number
+            continue
         total_us += int(values[12])
         total_sy += int(values[13])
         total_id += int(values[14])
         total_free += int(values[3])
-    
+
     num_samples = len(lines)
     return {
         'avg_us': total_us / num_samples,
