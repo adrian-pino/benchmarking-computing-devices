@@ -1,7 +1,9 @@
 # How to run the benchmarking
-# 1) Navigate into the KPI you want to measure (scripts folder) 
-# 2) Set the configuration parameters
-# 3) Run the python script with its name
+# 1) Activate the venv and install the python requirements
+# 2) Navigate into the KPI you want to measure (/scripts) 
+# 3) Set the configuration parameters
+# 4) Run the python script
+# 5) The results will be stored under /results
 
 # Requirements:
 # 1) Have python3 and venv installed
