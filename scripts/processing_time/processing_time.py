@@ -62,7 +62,6 @@ def measure_insertion_time(db, collection_name, data, repetitions):
 def drop_collection(db, collection_name):
     try:
         db.drop_collection(collection_name)
-        print(f"Collection '{collection_name}' dropped successfully.")
     except Exception as e:
         print(f"Error dropping collection '{collection_name}': {e}")
 
@@ -97,7 +96,7 @@ if __name__ == "__main__":
 
         with open(config['results_file'], "a") as file:
             file.write(f"Running {script_name} on {current_date}\n")
-            file.write(f"(Configuration --> Duration: {config['duration']} seconds, Repetitions: {config['repetitions']})\n")
+            file.write(f"(Configuration: Repetitions: {config['repetitions']})\n")
             file.write(f"{'*' * 60}\n\n")
 
         # Run the script for the devices specified in the config file
