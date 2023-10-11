@@ -62,6 +62,6 @@ def plot_ram_comparison(devices_data, output_file):
 
 
 if __name__ == "__main__":
-    results = parse_resource_utilization("../../results/xgain_testbed_resource_utilization.txt")
+    results = parse_resource_utilization("../../results/resource_utilization.txt")
     plot_cpu_comparison(results, "../../figures/resource_utilization_cpu.png")
     plot_ram_comparison(results, "../../figures/resource_utilization_ram.png")

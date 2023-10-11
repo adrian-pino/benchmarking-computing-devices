@@ -44,5 +44,5 @@ def plot_throughput(devices_data, output_file):
 
 
 if __name__ == "__main__":
-    results = parse_throughput('../../results/xgain_testbed_network_throughput.txt')
+    results = parse_throughput('../../results/network_throughput.txt')
     plot_throughput(results, "../../figures/network_throughput.png")
