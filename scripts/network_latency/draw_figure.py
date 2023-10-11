@@ -41,10 +41,7 @@ def plot_results(devices_data, output_file):
     # Save the figure to the specified file
     plt.savefig(output_file)
 
-    # Display the figure
-    plt.show()
-
 
 if __name__ == "__main__":
-    results = parse_results('../../results/xgain_testbed_network_latency.txt')
+    results = parse_results('../../results/network_latency.txt')
     plot_results(results, "../../figures/network_latency.png")

@@ -42,8 +42,6 @@ def plot_throughput(devices_data, output_file):
     # Save the figure to the specified file
     plt.savefig(output_file)
 
-    # Display the figure
-    plt.show()
 
 if __name__ == "__main__":
     results = parse_throughput('../../results/xgain_testbed_network_throughput.txt')

@@ -57,8 +57,9 @@ def plot_ram_comparison(devices_data, output_file):
     plt.xlabel('Device')
     plt.ylabel('Free RAM (MB)')
     
+    # Save the figure to the specified file
     plt.savefig(output_file)
-    plt.show()
+
 
 if __name__ == "__main__":
     results = parse_resource_utilization("../../results/xgain_testbed_resource_utilization.txt")
