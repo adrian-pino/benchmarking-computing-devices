@@ -8,14 +8,19 @@ import pdb
 def read_config(filename):
     config = configparser.ConfigParser()
     config.read(filename)
-
-    return {
+    
+    layers = [layer.strip() for layer in config['general'].get('layers').split(',')]
+    variables = {
         "results_file": config['general'].get('results_file', ''),
         "repetitions": int(config['general'].get('repetitions')),
         "duration": int(config['general'].get('duration')),
-        "extreme-edge": {k.replace("_ip", ""): v for k, v in config['extreme-edge'].items()},
-        "near-edge": {k.replace("_ip", ""): v for k, v in config['near-edge'].items()}
+        "layers": layers
     }
+
+    for layer in layers:
+        variables[layer] = {k.replace("_ip", ""): v for k, v in config[layer].items()}
+
+    return variables
 
 def measure_throughput(server_ip, duration, repetitions):
     results = []
@@ -68,17 +73,20 @@ def write_results_to_file(results_file, device_name, device_ip, iperf_output):
     #     file.write("\n".join(results) + "\n\n")
 
     with open(results_file, "a") as file:
-        file.write("-------------------------\n")
         # file.write("\n".join(results) + "\n\n")
         file.write(f"Device Name: {device_name}\n")
         file.write(f"Device IP: {device_ip}\n")
         file.write(iperf_output)
 
+def write_starting_layer_notice(results_file, category):
+    with open(results_file, "a") as file:
+        file.write(f"[Starting tests for {category.replace('-', ' ').title()}]\n")
+        file.write("-----------------------------------\n")
+
 def write_completion_layer_notice(results_file, category):
     with open(results_file, "a") as file:
-        file.write("\n" + ('*' * 40) + "\n")
-        file.write(f"Completed tests for {category.replace('-', ' ').title()}\n")
-        file.write(('*' * 40) + "\n\n")
+        file.write("-----------------------------------\n")
+        file.write(f"[Completed tests for {category.replace('-', ' ').title()}]\n\n")
 
 
 if __name__ == "__main__":
@@ -95,7 +103,8 @@ if __name__ == "__main__":
             file.write(f"{'*' * 60}\n\n")
 
         # Run the script in the devices specified in the config file
-        for category in ['extreme-edge', 'near-edge']:
+        for category in config.get('layers', []):
+            write_starting_layer_notice(config['results_file'], category)
             for device_name, device_ip in config[category].items():
                 throughput_results = measure_throughput(device_ip, config['duration'], config['repetitions'])
                 write_results_to_file(config['results_file'], device_name, device_ip, throughput_results)
