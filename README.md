@@ -1,6 +1,6 @@
-# Project Name
+# Benchmarking computing devices
 
-Benchmarking Computing Devices (network, processing time)
+Repository containing python scripts to perform a benchmarking on the compute segment of the network.
 
 ## Requirements
 
@@ -13,7 +13,7 @@ Before you begin, ensure you have met the following requirements:
 
 Follow these steps to set up your project environment:
 
-1. Create a virtual environment named "xgain" using `venv`:
+1. Create a virtual environment named "venv-xgain" using `venv`:
 
     ```bash
     python3 -m venv venv-xgain
@@ -27,12 +27,13 @@ Follow these steps to set up your project environment:
     source venv-xgain/bin/activate
     ```
 
-3. You are now in the virtual environment and can proceed with your project setup and execution.
+3. Navigate to the KPI folder to be measured (under scripts folder).
+- Set the configuration file.
+- Install the requirements specified in scripts/KPI_NAME/requirements.txt if any.
+- Run the python script with the KPI name.
 
-## Usage
-
-Provide instructions on how to use your project or run any scripts.
-
-## License
-
-This project is licensed under the XYZ License - see the [LICENSE](LICENSE) file for details.
+e.g:
+   ```bash
+    cd scripts/network_latency
+    (venv-xgain) python network_latency.py
+   ```
