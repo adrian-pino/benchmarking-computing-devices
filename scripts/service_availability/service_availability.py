@@ -86,6 +86,7 @@ if __name__ == "__main__":
                 successful_pings, total_pings = ping_device(device_ip, config['duration'], config['repetitions'])
                 write_service_availability_to_file(config['results_file'], device_name, device_ip, successful_pings, total_pings)
             write_completion_layer_notice(config['results_file'], category)
-            
+        print("Script successfully executed. Results stored in: " +config['results_file'])
+
     except Exception as e:
         print(f"Error: {e}")

@@ -56,12 +56,14 @@ def filtering_values_from_output(ping_output):
 
     return times_per_repetition, avg_rtts
 
-def write_results_to_file(results_file, device_name, device_ip, ping_output):
+def write_results_to_file(results_file, device_name, device_ip, repetition_number, ping_output):
     times_per_repetition, avg_rtts = filtering_values_from_output(ping_output)
+    repetition_number = int(repetition_number) + 1
 
     with open(results_file, "a") as file:
         file.write(f"Device Name: {device_name}\n")
-        file.write(f"Device IP: {device_ip}\n\n")
+        file.write(f"Device IP: {device_ip}\n")
+        file.write(f"Repetition number: {repetition_number}\n\n")
 
         # Writing each repetition's results
         for index, time_per_second in enumerate(times_per_repetition):
@@ -108,8 +110,9 @@ if __name__ == "__main__":
             write_starting_layer_notice(config['results_file'], category)
             for device_name, device_ip in config[category].items():
                 ping_results = ping_device(device_ip, config['duration'], config['repetitions'])
-                write_results_to_file(config['results_file'], device_name, device_ip, ping_results)
+                write_results_to_file(config['results_file'], device_name, device_ip, config['repetitions'], ping_results)
             write_completion_layer_notice(config['results_file'], category)
+        print("Script successfully executed. Results stored in: " +config['results_file'])
 
     except Exception as e:
         print(f"Error: {e}")

@@ -109,6 +109,7 @@ if __name__ == "__main__":
                 throughput_results = measure_throughput(device_ip, config['duration'], config['repetitions'])
                 write_results_to_file(config['results_file'], device_name, device_ip, throughput_results)
             write_completion_layer_notice(config['results_file'], category)
+        print("Script successfully executed. Results stored in: " +config['results_file'])
 
     except Exception as e:
         print(f"Error: {e}")
